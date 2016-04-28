@@ -1,0 +1,7 @@
+.DS_Store
+.envrc
+.direnv
+__pycache__
+*.pyc
+document_classification_20newsgroups.ipynb
+.ipynb_checkpoints/
