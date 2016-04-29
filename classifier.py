@@ -7,7 +7,7 @@ from sklearn.naive_bayes import MultinomialNB
 dataset = load_files('data', load_content=True,
                      encoding='UTF-8', decode_error='replace')
 
-seed = random.randint(0, 10000)
+seed = random.randint(0, 4294967295)
 
 docs_train, docs_test, y_train, y_test = train_test_split(
     dataset.data, dataset.target, test_size=0.20, random_state=seed)
