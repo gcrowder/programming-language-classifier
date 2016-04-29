@@ -11,7 +11,7 @@ dataset = load_files('data', load_content=True,
 seed = random.randint(0, 10000)
 
 docs_train, docs_test, y_train, y_test = train_test_split(
-    dataset.data, dataset.target, test_size=0.4, random_state=seed)
+    dataset.data, dataset.target, test_size=0.20, random_state=seed)
 
 hv = HashingVectorizer(non_negative=True)
 
@@ -24,5 +24,5 @@ test_code = hv.transform(docs_test)
 clf = MultinomialNB()
 clf.fit(train_code, y_train)
 print("Seed: {}".format(seed))
-print("Train Score: {}".format(clf.score(train_code, y_train)))
-print("Test Score: {}".format(clf.score(test_code, y_test)))
+print("MultinomialNB Train Score: {}".format(clf.score(train_code, y_train)))
+print("MultinomialNB Test Score: {}".format(clf.score(test_code, y_test)))
