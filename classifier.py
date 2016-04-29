@@ -1,5 +1,4 @@
 import random
-import pandas as pd
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction.text import HashingVectorizer
