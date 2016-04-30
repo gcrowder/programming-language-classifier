@@ -20,7 +20,7 @@ test_code = hv.transform(docs_test)
 # print("Train Row 2: {}.".format(train_code.getrow(2)))
 # print("Test Row 2: {}".format(test_code.getrow(2)))
 
-clf = MultinomialNB()
+clf = MultinomialNB(alpha=1.75)
 clf.fit(train_code, y_train)
 print("Seed: {}".format(seed))
 print("MultinomialNB Train Score: {}".format(clf.score(train_code, y_train)))
