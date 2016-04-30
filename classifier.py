@@ -12,6 +12,10 @@ def show_top10(classifier, vectorizer, categories):
         top10 = np.argsort(classifier.coef_[i])[-10:]
         print("%s: %s" % (category, " ".join(feature_names[top10])))
 
+with open('sample.py', 'r') as f:
+    sample = f.read()
+
+
 dataset = load_files('data', load_content=True,
                      encoding='UTF-8', decode_error='replace')
 
@@ -46,5 +50,10 @@ print("MultinomialNB Count Train Score: {}".format(clf.score(count_train_code,
                                                              y_train)))
 print("MultinomialNB Count Test Score: {}".format(clf.score(count_test_code,
                                                             y_test)))
+# show_top10(clf, cv, dataset.target_names)
 
-show_top10(clf, cv, dataset.target_names)
+print("Target: {}".format(dataset.target))
+print("Target Names: {}".format(dataset.target_names))
+
+prediction = clf.predict(cv.transform(sample))
+print("Prediction: {}\nPrediction Type: {}".format(prediction, type(prediction)))
