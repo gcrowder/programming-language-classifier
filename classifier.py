@@ -1,81 +1,58 @@
-import random
-import numpy as np
-from scipy import stats
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
-from sklearn.feature_extraction.text import HashingVectorizer, TfidfTransformer, CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 
 
-def show_top10(classifier, vectorizer, categories):
-    feature_names = np.asarray(vectorizer.get_feature_names())
-    for i, category in enumerate(categories):
-        top10 = np.argsort(classifier.coef_[i])[-10:]
-        print("%s: %s" % (category, " ".join(feature_names[top10])))
-
-with open('Markdown.pl', 'r') as f:
-    sample = [f.read()]
+def read_test_file(filename):
+    """Pass in filename string and return contents in a list."""
+    with open(filename, 'r') as f:
+        program = [f.read()]
+    return program
 
 
-dataset = load_files('data', load_content=True,
-                     encoding='UTF-8', decode_error='replace')
-# target_dict = {key: value for key, value in enumerate(dataset.target_names)}
-# [target_dict[x] for x in dataset.target]
-# print("Target Dict: {}".format(target_dict))
-# print(dataset.target)
-# print([target_dict[x] for x in dataset.target])
-print("Number of Filenames: {}\nNumber of Targets: {}".format(len(dataset.filenames), len(dataset.target)))
-seed = random.randint(0, 4294967295)
+def prepare_dataset():
+    """Load data files from directory, split into train and test.
+    Return lists of target names, training samples, testing samples,
+    training targets and testing targets. """
+    # print("Step 1")
+    dataset = load_files('data', load_content=True,
+                         encoding='UTF-8', decode_error='replace')
+    # print("Step 2")
+    X_train, X_test, y_train, y_test = train_test_split(
+        dataset.data, dataset.target, test_size=0.20, random_state=3114795823)
+    # print("Step 3")
+    return dataset.target_names, X_train, X_test, y_train, y_test
 
-docs_train, docs_test, y_train, y_test = train_test_split(
-    dataset.data, dataset.target, test_size=0.20, random_state=seed)
+
+def predict_language(filename):
+    # print("Step 0")
+    target_names, docs_train, docs_test, y_train, y_test = prepare_dataset()
+    # print("Step 4")
+    keystone = Pipeline([('vectorizer', CountVectorizer()),
+                        ('classifier', MultinomialNB(alpha=1.25))])
+    # print("Step 5")
+    keystone.fit(docs_train, y_train)
+    # print("Step 6")
+    # train_score = keystone.score(docs_train, y_train)
+    # print("MultinomialNB Count Train Score: {}".format(train_score))
+    # test_score = keystone.score(docs_test, y_test)
+    # print("MultinomialNB Count Test Score: {}".format(test_score))
+
+    sample = read_test_file(filename)
+    # print("Step 8")
+    prediction = keystone.predict(sample)
+    print(prediction)
+    print("Prediction: {}".format(target_names[prediction[0]]))
+    return target_names[prediction[0]]
 
 
-hv = HashingVectorizer(non_negative=True)
-cv = CountVectorizer()
-#td = TfidfTransformer()
+def main():
+    print("Markdown.pl is written in Perl: ")
+    predict_language('Markdown.pl')
+    print("sample.py is written in python: ")
+    predict_language('sample.py')
 
-hash_train_code = hv.transform(docs_train)
-hash_test_code = hv.transform(docs_test)
-
-# td.fit(hash_train_code)
-# transformed_hash_train_code = td.transform(hash_train_code)
-# transformed_hash_test_code = td.transform(hash_test_code)
-count_train_code = cv.fit_transform(docs_train)
-count_test_code = cv.transform(docs_test)
-# print("Number of features: ".format(cv.get_feature_names()))
-# print("Train Row 2: {}.".format(train_code.getrow(2)))
-# print("Test Row 2: {}".format(test_code.getrow(2)))
-#td.fit(count_train_code)
-#transformed_count_train_code = td.transform(count_train_code)
-#transformed_count_test_code = td.transform(count_test_code)
-
-# hash_clf = MultinomialNB(alpha=.9)
-# hash_clf.fit(td.transform(transformed_hash_train_code), y_train)
-# print("Seed: {}".format(seed))
-# print("MultinomialNB Hash Train Score: {}".format(hash_clf.score(
-#                                                   transformed_hash_train_code, y_train)))
-# print("MultinomialNB Hash Test Score: {}".format(hash_clf.score(transformed_hash_test_code,
-#                                                  y_test)))
-clf = MultinomialNB(alpha=1.35)
-clf.fit(count_train_code, y_train)
-print("Seed: {}".format(seed))
-print("MultinomialNB Count Train Score: {}".format(clf.score(count_train_code,
-                                                             y_train)))
-print("MultinomialNB Count Test Score: {}".format(clf.score(count_test_code,
-                                                            y_test)))
-show_top10(clf, cv, dataset.target_names)
-
-print("Target: {}".format(dataset.target))
-print("Target Names: {}".format(dataset.target_names))
-
-transformed_sample = cv.transform(sample)
-print("Transformed Sample: ")
-print(transformed_sample.toarray())
-prediction = clf.predict(transformed_sample)
-print(prediction)
-print("Prediction: {}".format(dataset.target_names[prediction]))
-# mode, count = stats.mode(prediction)
-# print("Target Category: {}".format(mode))
-# print("Number of features: ".format(cv.get_feature_names()))
+if __name__ == '__main__':
+    main()

@@ -6,7 +6,7 @@ def sum_5_random_integers():
 
 
 def main():
-    print(count_5_random_integers())
+    print(sum_5_random_integers())
 
 
 if __name__ == '__main__':
