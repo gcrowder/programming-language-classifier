@@ -1,8 +1,12 @@
+import os
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
+# from sklearn.naive_bayes import MultinomialNB
+# 'classifier', MultinomialNB(alpha=1.25))
+from sklearn import linear_model
 from sklearn.pipeline import Pipeline
+from sklearn.externals import joblib
 
 
 def read_test_file(filename):
@@ -26,20 +30,19 @@ def prepare_dataset():
     return dataset.target_names, X_train, X_test, y_train, y_test
 
 
-def predict_language(filename):
-    # print("Step 0")
+def prepare_pipeline():
     target_names, docs_train, docs_test, y_train, y_test = prepare_dataset()
-    # print("Step 4")
-    keystone = Pipeline([('vectorizer', CountVectorizer()),
-                        ('classifier', MultinomialNB(alpha=1.25))])
-    # print("Step 5")
-    keystone.fit(docs_train, y_train)
-    # print("Step 6")
-    # train_score = keystone.score(docs_train, y_train)
-    # print("MultinomialNB Count Train Score: {}".format(train_score))
-    # test_score = keystone.score(docs_test, y_test)
-    # print("MultinomialNB Count Test Score: {}".format(test_score))
+    if os.path.isfile('.pipeline.pkl'):
+        keystone = joblib.load('.pipeline.pkl')
+    else:
+        keystone = Pipeline([('vectorizer', CountVectorizer()),
+                            ('classifier', linear_model.SGDClassifier())])
+        keystone.fit(docs_train, y_train)
+        joblib.dump(keystone, '.pipeline.pkl', compress=1)
+    return keystone, target_names
 
+
+def predict_language(filename, keystone, target_names):
     sample = read_test_file(filename)
     # print("Step 8")
     prediction = keystone.predict(sample)
@@ -49,10 +52,11 @@ def predict_language(filename):
 
 
 def main():
+    pipeline, target_names = prepare_pipeline()
     print("Markdown.pl is written in Perl: ")
-    predict_language('Markdown.pl')
+    predict_language('Markdown.pl', pipeline, target_names)
     print("sample.py is written in python: ")
-    predict_language('sample.py')
+    predict_language('sample.py', pipeline, target_names)
 
 if __name__ == '__main__':
     main()

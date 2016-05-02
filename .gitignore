@@ -6,3 +6,4 @@ __pycache__
 document_classification_20newsgroups.ipynb
 .ipynb_checkpoints/
 benchmarksgame-2014-08-31
+.pipeline.pkl
