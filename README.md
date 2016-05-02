@@ -21,6 +21,7 @@ This classifier is familiar with 15 programming languages:
 - scala
 - scheme
 - tcl
+
 From your command line, in the programming-language-classifier directory, run `python3 classifier.py 'filename'`, where filename is the path to the file which you want to have classified.
 
 ## data
