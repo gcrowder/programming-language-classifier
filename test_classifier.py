@@ -104,11 +104,11 @@ def test_file_twentyfive():
 
 
 def test_file_twentysix():
-    assert not predict_language('tests/26', pipe, target_names) == 'tcl'
+    assert predict_language('tests/26', pipe, target_names) == 'tcl'
 
 
 def test_file_twentyseven():
-    assert not predict_language('tests/27', pipe, target_names) == 'tcl'
+    assert predict_language('tests/27', pipe, target_names) == 'tcl'
 
 
 def test_file_twentyeight():

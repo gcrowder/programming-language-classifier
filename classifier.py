@@ -1,7 +1,8 @@
 import os
+import argparse
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 # from sklearn.naive_bayes import MultinomialNB
 # 'classifier', MultinomialNB(alpha=1.25))
 from sklearn import linear_model
@@ -31,13 +32,15 @@ def prepare_dataset():
 
 
 def prepare_pipeline():
-    target_names, docs_train, docs_test, y_train, y_test = prepare_dataset()
     if os.path.isfile('.pipeline.pkl'):
         keystone = joblib.load('.pipeline.pkl')
+        target_names = load_files('data').target_names
     else:
+        target_names, X_train, X_test, y_train, y_test = prepare_dataset()
         keystone = Pipeline([('vectorizer', CountVectorizer()),
+                            ('tfidf', TfidfTransformer()),
                             ('classifier', linear_model.SGDClassifier())])
-        keystone.fit(docs_train, y_train)
+        keystone.fit(X_train, y_train)
         joblib.dump(keystone, '.pipeline.pkl', compress=1)
     return keystone, target_names
 
@@ -46,17 +49,18 @@ def predict_language(filename, keystone, target_names):
     sample = read_test_file(filename)
     # print("Step 8")
     prediction = keystone.predict(sample)
-    print(prediction)
     print("Prediction: {}".format(target_names[prediction[0]]))
     return target_names[prediction[0]]
 
 
-def main():
+def main(filename):
     pipeline, target_names = prepare_pipeline()
-    print("Markdown.pl is written in Perl: ")
-    predict_language('Markdown.pl', pipeline, target_names)
-    print("sample.py is written in python: ")
-    predict_language('sample.py', pipeline, target_names)
+    predict_language(filename, pipeline, target_names)
+
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Classify programs.')
+    parser.add_argument('filename', type=str, nargs='?', default='sample.py',
+                        help='A filename for the classifier')
+    args = parser.parse_args()
+    main(args.filename)
