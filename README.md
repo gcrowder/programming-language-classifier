@@ -7,7 +7,7 @@ To ensure you have the necessary dependencies installed, run: `pip install -r re
 ## classifier.py
 This classifier is familiar with 15 programming languages:
 - c
-- c_sharp
+- c#
 - clojure
 - common_lisp
 - haskell
@@ -22,13 +22,16 @@ This classifier is familiar with 15 programming languages:
 - scheme
 - tcl
 
-From your command line, in the programming-language-classifier directory, run `python3 classifier.py 'filename'`, where filename is the path to the file which you want to have classified.
+From your command line, in the programming-language-classifier directory, run `python3 classifier.py filename`, where filename is the path to the file which you want to have classified.
+
+## Classifier-Presentation.ipynb
+This is the [presentation notebook](https://github.com/gcrowder/programming-language-classifier/Classifier-Presentation.ipynb) that explains the machine learning algorithm behind classifier.py and compares it to another similar method.
 
 ## data
 This directory contains the source material for classifier.py's machine learning algorithm.
 If you wish to add more programs, just add programs to the directory named for the respective programming language. If no applicable directory is present, create one named after the programming language and place the program inside.
 
-If you changed the data directory or its sub-directories in any way, and you have run classifier.py at least once before, YOU MUST DELETE .pipeline.pkl in order to force classifier.py to retrain the classifier. You may do this by runing `rm .pipeline.pkl` from your command line in the programming-language-classifier directory.
+If you changed the data directory or its sub-directories in any way, and you have run classifier.py at least once before, *YOU MUST DELETE* .pipeline.pkl in order to force classifier.py to retrain the classifier. You may do this by runing `rm .pipeline.pkl` from your command line in the programming-language-classifier directory.
 
 ## test_classifier.py
 A python script to test the classifier.
