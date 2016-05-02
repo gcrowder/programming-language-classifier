@@ -25,7 +25,7 @@ This classifier is familiar with 15 programming languages:
 From your command line, in the programming-language-classifier directory, run `python3 classifier.py filename`, where filename is the path to the file which you want to have classified.
 
 ## Classifier-Presentation.ipynb
-This is the [presentation notebook](https://github.com/gcrowder/programming-language-classifier/Classifier-Presentation.ipynb) that explains the machine learning algorithm behind classifier.py and compares it to another similar method.
+This is the [presentation notebook](https://github.com/gcrowder/programming-language-classifier/blob/master/Classifier-Presentation.ipynb) that explains the machine learning algorithm behind classifier.py and compares it to another similar method.
 
 ## data
 This directory contains the source material for classifier.py's machine learning algorithm.
