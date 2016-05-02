@@ -3,8 +3,6 @@ import argparse
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-# from sklearn.naive_bayes import MultinomialNB
-# 'classifier', MultinomialNB(alpha=1.25))
 from sklearn import linear_model
 from sklearn.pipeline import Pipeline
 from sklearn.externals import joblib
