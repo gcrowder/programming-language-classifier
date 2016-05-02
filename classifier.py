@@ -30,6 +30,8 @@ def prepare_dataset():
 
 
 def prepare_pipeline():
+    """ Check to see if pipeline can be loaded from pickle. If not, train
+    pipeline. Return pipeline and list of target names."""
     if os.path.isfile('.pipeline.pkl'):
         keystone = joblib.load('.pipeline.pkl')
         target_names = load_files('data').target_names
@@ -44,14 +46,16 @@ def prepare_pipeline():
 
 
 def predict_language(filename, keystone, target_names):
+    """ Given a filename, a classifier pipeline and a list of target names:
+    make a prediction based on a sample read in from file."""
     sample = read_test_file(filename)
-    # print("Step 8")
     prediction = keystone.predict(sample)
     print("Prediction: {}".format(target_names[prediction[0]]))
     return target_names[prediction[0]]
 
 
 def main(filename):
+    """Get a pipeline and predict a language."""
     pipeline, target_names = prepare_pipeline()
     predict_language(filename, pipeline, target_names)
 

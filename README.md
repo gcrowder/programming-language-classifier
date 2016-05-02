@@ -31,7 +31,7 @@ This is the [presentation notebook](https://github.com/gcrowder/programming-lang
 This directory contains the source material for classifier.py's machine learning algorithm.
 If you wish to add more programs, just add programs to the directory named for the respective programming language. If no applicable directory is present, create one named after the programming language and place the program inside.
 
-If you changed the data directory or its sub-directories in any way, and you have run classifier.py at least once before, *YOU MUST DELETE* .pipeline.pkl in order to force classifier.py to retrain the classifier. You may do this by runing `rm .pipeline.pkl` from your command line in the programming-language-classifier directory.
+If you changed the data directory or its sub-directories in any way, and you have run classifier.py at least once before, *YOU MUST DELETE* .pipeline.pkl in order to force classifier.py to retrain the classifier. You may do this by running `rm .pipeline.pkl` from your command line in the programming-language-classifier directory.
 
 ## test_classifier.py
 A python script to test the classifier.
